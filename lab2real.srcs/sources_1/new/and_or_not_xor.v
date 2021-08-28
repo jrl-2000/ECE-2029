@@ -1,9 +1,9 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: WPI
-// Engineer: Lopez-Earnest
+// Engineer: Jonathan Lopez
 // 
-// Create Date: 04/14/2020 11:42:04 PM
+// Create Date: 04/15/2020 10:24:36 AM
 // Design Name: 
 // Module Name: and_or_not_xor
 // Project Name: 
@@ -24,19 +24,15 @@ module and_or_not_xor(
     input A,
     input B,
     input C,
-    output outAND,
+    output outAnd,
     output outOR,
     output outXOR,
-    output notC,
-    output outNAND,
-    output outNOR,
-    output outXNOR
+    output notC
     );
-    assign outAND = A & B;
+    
+    assign outAnd = A & B;
     assign outOR = A | B;
     assign outXOR = A ^ B;
     assign notC = ~C;
-    assign outNAND = ~(A & B);
-    assign outNOR = ~(A | B);
-    assign outXNOR = ~(A ^ B);
+    
 endmodule
