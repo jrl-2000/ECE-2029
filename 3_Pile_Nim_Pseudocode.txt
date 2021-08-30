@@ -1,0 +1,52 @@
+//human always starts (to avoid complexity and so either side can win)
+
+//the numbers left in each pile are stored in 3 element int array piles[] which works pretty well with verilog actually
+//LEDs right justify by group, so when a piece is taken from a group the leftmost ones go out first
+//runs as long as there are pieces on the board
+while (not all piles are 0 (pretty easy check, no module)) {
+	//player turn is probably a wire
+	if (playerTurn) {
+		//wait for player to choose pieces
+		//on press of submit button see which switches are flipped and turn off the corresponding number of LEDs (not necessaily the ones that line up with switches)
+		//update piece group counts
+		//need module to determine if move is valid (ie see if switches in more than one group are selected, if so do nothing and wait for button press again)
+		//can maybe use an almost empty while loop with button-press && validMove module as the condition to wait for player turn, only breaks when both are true
+		//need module to update pile counts and another to take in current pile counts and display LEDs properly, starting with lighting them from the right side of the pile
+	} else {
+		if (winningPosition (just check A^B^C, no module)) {
+			//computer CAN make an ideal move, so it should make it
+			//look through color options, check if pieces can be subtracted to make a zero state
+			//or if the other two piles are equal, meaning all pieces from this color should be taken
+			//verilog does have for loops so this logic is applicable
+			for (int i = 0; i < 3; i++) {
+				//tryValue would be a wire I think
+				int tryValue = piles[i] - (piles[(i + 1) % 3] ^ piles[(i + 2) % 3]);
+				if (piles[(i + 1) % 3] == piles[(i + 2) % 3]) {
+					//where r is a wire representing group to take from and val is a wire representing value to take
+					r = i;
+					val = piles[i];
+				} else if (tryValue < piles[i] && tryValue > 0) {
+					r = i;
+					val = tryValue;
+				}
+			}
+		} else {
+			//computer CANNOT make an ideal move, so it should make a random one
+			//usually we'd take a random number of pieces but that's hard in Verilog so if there's no winning move we'll always take one
+			r = 0;
+			//cycle through groups to find a non-empty group
+			while (piles[r] == 0) {
+				//move to the next group if the current one is empty
+				r++;
+			}
+			//always taking one piece
+			val = 1;
+		}
+		//take the pieces and update the LEDs
+		piles[r] -= val;
+	}
+	//switch players
+	playerTurn = !playerTurn;
+}
+//module for endgame display
+//maybe display "You" or "Me" based on who wins on 7 seg (M would be across 2) (these messages could be hard-coded since there's only 2)
